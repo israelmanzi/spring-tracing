@@ -9,15 +9,14 @@ services:
     container_name: web-app
     ports:
       - "8080:8080"
-    networks:
-      - app_net
+#    networks:
+#      - app_net
     environment:
-      OTEL_EXPORTER_OTLP_ENDPOINT: http://192.168.100.170:4318/v1/traces
-      OTEL_EXPORTER_OTLP_METRICS: http://192.168.100.170:4318/v1/metrics
-      OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
-      OTEL_SERVICE_NAME: web-app
-      OTEL_RESOURCE_ATTRIBUTES: "service=web-app,env=prod"
-    entrypoint: ["java", "-javaagent:/otel-agent.jar", "-Dotel.service.name=web-app", "-jar", "spring-boot-docker-postgres.jar"]
+      OTEL_SERVICE_NAME: "automobile-service"
+      OTEL_RESOURCE_ATTRIBUTES: "service=automobile-service,env=dev"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://localhost:4317"
+      OTEL_LOGS_EXPORTER: "otlp"
+    entrypoint: ["java", "-javaagent:/otel-agent.jar", "-jar", "spring-boot-docker-postgres.jar"]
     volumes:
       - ./otel-agent.jar:/otel-agent.jar
 
@@ -32,8 +31,8 @@ services:
     restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - app_net
+#    networks:
+#      - app_net
     ports:
       - "5432:5432"
     environment:
@@ -42,9 +41,9 @@ services:
       POSTGRES_DB: automobiles
       PGDATA: /var/lib/postgresql/data/pgdata
 
-networks:
-  app_net:
-    driver: bridge
+#networks:
+#  app_net:
+#    driver: bridge
 
 volumes:
   postgres_data:
