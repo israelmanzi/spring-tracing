@@ -20,7 +20,7 @@ services:
       "java",
       "-javaagent:/otel-agent.jar",
       "-jar",
-      "-Dotel.service.name=web-app",
+      "-Dotel.service.name=web-app-israel",
       "-Dotel.traces.exporter=otlp",
       "-Dotel.metrics.exporter=otlp",
       "-Dotel.logs.exporter=otlp",

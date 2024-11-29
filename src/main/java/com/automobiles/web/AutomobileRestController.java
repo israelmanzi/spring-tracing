@@ -89,9 +89,10 @@ public class AutomobileRestController {
     @ResponseStatus(HttpStatus.OK)
     public List<String> getAllAutomobilesByName() {
         List<Automobile> collection = repository.findAll();
-        return collection.stream()
-                .map(Automobile::getName)
-                .sorted()
-                .collect(Collectors.toList());
+        throw new ThereIsNoSuchAutoException();
+//        return collection.stream()
+//                .map(Automobile::getName)
+//                .sorted()
+//                .collect(Collectors.toList());
     }
 }
