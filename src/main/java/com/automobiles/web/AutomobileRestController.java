@@ -2,13 +2,10 @@ package com.automobiles.web;
 
 import com.automobiles.domain.Automobile;
 import com.automobiles.domain.AutomobileRepository;
-import com.automobiles.exception.AutoWasDeletedException;
 import com.automobiles.exception.ThereIsNoSuchAutoException;
-import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -42,57 +39,18 @@ public class AutomobileRestController {
     @GetMapping("/automobiles/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Automobile getAutomobileById(@PathVariable UUID id) {
-        Automobile receivedAutomobile = repository.findById(id)
-                .orElseThrow(ThereIsNoSuchAutoException::new);
-        if (receivedAutomobile.getDeleted()) {
-            throw new AutoWasDeletedException();
-        }
-        return receivedAutomobile;
-    }
-
-    @PutMapping("/automobiles/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Automobile refreshAutomobile(@PathVariable UUID id, @RequestBody Automobile automobile) {
         return repository.findById(id)
-                .map(entity -> {
-                    entity.checkColor(automobile);
-                    entity.setName(automobile.getName());
-                    entity.setColor(automobile.getColor());
-                    entity.setUpdateDate(automobile.getUpdateDate());
-                    if (entity.getDeleted()) {
-                        throw new AutoWasDeletedException();
-                    }
-                    return repository.save(entity);
-                })
-                .orElseThrow(ThereIsNoSuchAutoException::new);
+                .orElseThrow(() -> new IllegalArgumentException("Invalid automobile id: " + id));
     }
 
-    @DeleteMapping("/automobiles/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @CacheEvict(value = "automobile", key = "#id")
-    public String removeAutomobileById(@PathVariable UUID id) {
-        Automobile deletedAutomobile = repository.findById(id)
-                .orElseThrow(ThereIsNoSuchAutoException::new);
-        deletedAutomobile.setDeleted(Boolean.TRUE);
-        repository.save(deletedAutomobile);
-        return "Deleted";
-    }
-
-    @Hidden
-    @DeleteMapping("/automobiles")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeAllAutomobiles() {
-        repository.deleteAll();
-    }
-
-    @GetMapping("/automobiles-names")
-    @ResponseStatus(HttpStatus.OK)
-    public List<String> getAllAutomobilesByName() {
-        List<Automobile> collection = repository.findAll();
-        throw new ThereIsNoSuchAutoException();
+//    @GetMapping("/automobiles-names")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<String> getAllAutomobilesByName() {
+//        throw new ThereIsNoSuchAutoException("No automobiles available");
+//        List<Automobile> collection = repository.findAll();
 //        return collection.stream()
 //                .map(Automobile::getName)
 //                .sorted()
 //                .collect(Collectors.toList());
-    }
+//    }
 }

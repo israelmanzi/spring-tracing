@@ -39,21 +39,4 @@ public interface AutomobileOpenApi extends AutomobileResource {
             @Parameter(description = "Id of the Automobile to be obtained. Cannot be empty.", required = true)
             @PathVariable Long id);
 
-    @Operation(summary = "Update an existing Automobile", description = "Need to fill", tags = {"Automobile"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful operation"),
-            @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
-            @ApiResponse(responseCode = "404", description = "Automobile not found"),
-            @ApiResponse(responseCode = "405", description = "Validation exception")})
-    Automobile refreshAutomobile(
-            @Parameter(description = "Id of the Automobile to be updated. Cannot be empty.", required = true) Long id,
-            @Parameter(description = "Automobile to update.", required = true) Automobile automobile);
-
-    @Operation(summary = "Deletes an Automobile", description = "Need to fill", tags = {"Automobile"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful operation"),
-            @ApiResponse(responseCode = "404", description = "Automobile not found")})
-    String removeAutomobileById(
-            @Parameter(description = "Id of the Automobile to be deleted. Cannot be empty.", required = true) Long id);
-
 }

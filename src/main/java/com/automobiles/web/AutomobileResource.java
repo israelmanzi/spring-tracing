@@ -12,12 +12,4 @@ public interface AutomobileResource {
     Collection<Automobile> getAllAutomobiles();
 
     Automobile getAutomobileById(Long id);
-
-    Automobile refreshAutomobile(Long id, Automobile automobile);
-
-    String removeAutomobileById(Long id);
-
-    void removeAllAutomobiles();
-
-    List<String> getAllAutomobilesByName();
 }

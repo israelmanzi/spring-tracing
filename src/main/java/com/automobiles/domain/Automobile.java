@@ -1,7 +1,6 @@
 package com.automobiles.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -33,10 +32,6 @@ public class Automobile {
     @Size(max = 50)
     private String name;
 
-    @Schema(description = "Color of the Automobile.", example = "Red")
-    @Size(max = 50)
-    private String color;
-
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -46,17 +41,4 @@ public class Automobile {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime updateDate = LocalDateTime.now();
-
-    @Column(name = "original_color")
-    private Boolean originalColor = Boolean.TRUE;
-
-    @JsonIgnore
-    @Schema(hidden = true)
-    private Boolean deleted = Boolean.FALSE;
-
-    public void checkColor(Automobile automobile) {
-        if (automobile.color != null && !automobile.color.equals(this.color)) {
-            this.originalColor = false;
-        }
-    }
 }
