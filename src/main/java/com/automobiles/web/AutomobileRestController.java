@@ -2,7 +2,6 @@ package com.automobiles.web;
 
 import com.automobiles.domain.Automobile;
 import com.automobiles.domain.AutomobileRepository;
-import com.automobiles.exception.ThereIsNoSuchAutoException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,14 +42,13 @@ public class AutomobileRestController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid automobile id: " + id));
     }
 
-//    @GetMapping("/automobiles-names")
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<String> getAllAutomobilesByName() {
-//        throw new ThereIsNoSuchAutoException("No automobiles available");
-//        List<Automobile> collection = repository.findAll();
-//        return collection.stream()
-//                .map(Automobile::getName)
-//                .sorted()
-//                .collect(Collectors.toList());
-//    }
+    @GetMapping("/automobiles-names")
+    @ResponseStatus(HttpStatus.OK)
+    public List<String> getAllAutomobilesByName() {
+        List<Automobile> collection = repository.findAll();
+        return collection.stream()
+                .map(Automobile::getName)
+                .sorted()
+                .collect(Collectors.toList());
+    }
 }
